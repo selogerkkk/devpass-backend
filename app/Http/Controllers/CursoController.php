@@ -35,7 +35,9 @@ class CursoController extends Controller
             'titulo' => 'required|string|max:255',
             'descricao' => 'required|string',
             'professor' => 'required|string|max:255',
-            'conteudo' => 'required|json',
+            'conteudo' => 'required|array',
+            'conteudo.*.titulo' => 'required|string|max:255',
+            'conteudo.*.url' => 'required|string',
             'duracao' => 'required|string|max:255',
             'preco' => 'required|numeric',
         ]);
