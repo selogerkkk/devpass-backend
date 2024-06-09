@@ -7,7 +7,7 @@ Este é um guia de configuração para um projeto Laravel usando Docker e Autent
 Clone o repositório:
 
 ```bash
-git clone https://github.com/selogerkkk/desafioBackend.git
+git clone https://github.com/selogerkkk/devpass-backend/.git
 ```
 
 Copie o arquivo de ambiente:
@@ -60,6 +60,14 @@ Rode as migrações para configurar o banco de dados:
 sail artisan migrate:fresh
 ```
 
+## Semeando o Banco de Dados
+
+Rode esse comando para semear o banco de dados:
+
+```bash
+sail artisan db:seed DatabaseSeeder
+```
+
 ## Problema de Permissão
 
 Se encontrar o erro "Failed to open stream: Permission denied", execute:
@@ -70,44 +78,11 @@ chmod -R guo+w storage
 
 ## Documentação da API
 
-A documentação da API é feita usando o Swagger. Para visualizar a documentação usando a SwaggerUI, acesse [Swagger Documentation](http://localhost:3000/api/documentation).
+A documentação da API é feita usando o Scramble. Para visualizar a documentação usando a ScrambleUI, acesse [Scramble Documentation](http://localhost:3000/docs/api).
 
 ## Usuário de Teste
 
 Um usuário de teste foi criado para fins de teste. As informações do usuário são as seguintes:
 
-- Email: `admin@admin.com`
-- Senha: `admin123`
-
-## Endpoints
-
-### 1. Listar todas as ferramentas
-- Método: `GET`
-- Rota: `/tools`
-- Descrição: Retorna a lista de todas as ferramentas cadastradas.
-
-### 2. Filtrar ferramentas por tag
-- Método: `GET`
-- Rota: `/tools?tag=node`
-- Descrição: Retorna as ferramentas filtradas pela tag especificada.
-
-### 3. Cadastrar uma nova ferramenta
-- Método: `POST`
-- Rota: `/tools`
-- Descrição: Adiciona uma nova ferramenta ao repositório. O corpo da requisição deve conter as informações da ferramenta.
-
-   Exemplo de corpo da requisição:
-
-   ```json
-   {
-       "title": "hotel",
-       "link": "https://github.com/typicode/hotel",
-       "description": "Local app manager...",
-       "tags":["node", "organizing", "webapps", "domain", "developer", "https", "proxy"]
-   }
-### 4. Remover uma ferramenta por ID
-- Método: `POST`
-- Rota: `/tools/:id`
-- Descrição: Remove a ferramenta com o ID especificado.
-
-
+- Email: `admin@gmail.com`
+- Senha: `password`
