@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Curso;
 use App\Models\Comunidade;
 use Illuminate\Database\Seeder;
 
@@ -10,11 +11,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => 'password',
-        ]);
+        $user = User::firstOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Admin',
+                'password' => 'password',
+            ]
+        );
 
         $users = User::factory(10)->create();
 
@@ -23,5 +26,7 @@ class DatabaseSeeder extends Seeder
                 $users->random(rand(1, 5))->pluck('id')->toArray()
             );
         });
+
+        Curso::factory()->count(5)->create();
     }
 }
