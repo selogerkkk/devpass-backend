@@ -27,6 +27,7 @@ class ComunidadeController extends Controller
             'nome' => 'required|string|max:255',
             'tema' => 'required|string|max:255',
             'atividades' => 'array',
+            'descricao' => 'nullable|string',
         ]);
 
         $comunidade = Comunidade::create($request->all());

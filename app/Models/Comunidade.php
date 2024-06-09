@@ -13,7 +13,8 @@ class Comunidade extends Model
         'nome',
         'tema',
         'atividades',
-        'membros'
+        'membros',
+        'descricao',
     ];
 
     protected $casts = [

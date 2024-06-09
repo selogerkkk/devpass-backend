@@ -13,6 +13,7 @@ class ComunidadeResource extends JsonResource
             'nome' => $this->nome,
             'tema' => $this->tema,
             'atividades' => $this->atividades,
+            'descricao' => $this->descricao,
             'membros' => UserResource::collection($this->membros),
         ];
     }
