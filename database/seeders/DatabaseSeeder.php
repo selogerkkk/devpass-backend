@@ -10,6 +10,12 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => 'password',
+        ]);
+
         $users = User::factory(10)->create();
 
         Comunidade::factory(5)->create()->each(function ($comunidade) use ($users) {
