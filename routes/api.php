@@ -27,11 +27,11 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('cursos')->name('.cursos')->group(function () {
-            Route::get('cursos', [CursoController::class, 'listarCursos'])->name('.index');
             Route::post('/{cursoId}/inscrever', [CursoController::class, 'inscreverUsuario'])->name('.purchase');
             Route::post('/', [CursoController::class, 'cadastrarCurso'])->name('.store');
             Route::put('/{id}', [CursoController::class, 'atualizarCurso'])->name('.update');
             Route::delete('/{id}', [CursoController::class, 'excluirCurso'])->name('.destroy');
+            Route::get('cursos', [CursoController::class, 'listarCursos'])->name('.index');
         });
 
         Route::prefix('perfis')->name('.perfis')->group(function () {
