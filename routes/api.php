@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CursoController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ToolController;
 use App\Http\Controllers\Api\UserController;
@@ -25,12 +27,20 @@ Route::prefix('v1')->group(function () {
             Route::delete('/{id}', [ComunidadeController::class, 'destroy'])->name('.destroy');
         });
 
-        Route::prefix('tools')->name('.tools')->group(function () {
-            Route::get('tools', [ToolController::class, 'getTools']);
+        Route::prefix('cursos')->name('.cursos')->group(function () {
+            Route::get('cursos', [CursoController::class, 'listarCursos'])->name('.index');
+            Route::post('/{cursoId}/inscrever', [CursoController::class, 'inscreverUsuario'])->name('.purchase');
+            Route::post('/', [CursoController::class, 'cadastrarCurso'])->name('.store');
+            Route::put('/{id}', [CursoController::class, 'atualizarCurso'])->name('.update');
+            Route::delete('/{id}', [CursoController::class, 'excluirCurso'])->name('.delete');
+        });
 
-            Route::post('tools', [ToolController::class, 'createTool']);
+        Route::prefix('perfis')->name('.perfis')->group(function () {
 
-            Route::delete('tools/{id}', [ToolController::class, 'deleteTool']);
+            Route::post('/', [PerfilController::class, 'store'])->name('.store');
+            Route::get('/{userId}', [PerfilController::class, 'show'])->name('.show');
+            Route::put('/{userId}', [PerfilController::class, 'update'])->name('.update');
+            Route::delete('/{userId}', [PerfilController::class, 'destroy'])->name('.destroy');
         });
     });
 });
