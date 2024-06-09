@@ -12,6 +12,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'participacao_em_comunidades' => $this->participacaoEmComunidades->pluck('nome'),
         ];
     }
 }

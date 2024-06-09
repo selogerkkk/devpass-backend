@@ -1,34 +1,36 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ToolController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\ComunidadeController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::prefix('v1')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+    Route::group(['middleware' => ['apiJwt']], function () {
+        Route::prefix('users')->name('.users')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('.index');
+            Route::post('/', [UserController::class, 'store'])->name('.store');
+            Route::get('/{id}', [UserController::class, 'show'])->name('.show');
+            Route::delete('/{id}', [UserController::class, 'destroy'])->name('.destroy');
+            Route::post('/{id}/subscribe', [UserController::class, 'subscribeToCommunity'])->name('.subscribe');
+        });
 
-Route::post('auth/login', [AuthController::class, 'login']);
+        Route::prefix('comunidades')->name('.comunidades')->group(function () {
+            Route::get('/', [ComunidadeController::class, 'index'])->name('.index');
+            Route::get('/{id}', [ComunidadeController::class, 'show'])->name('.show');
+            Route::post('/', [ComunidadeController::class, 'store'])->name('.store');
+            Route::delete('/{id}', [ComunidadeController::class, 'destroy'])->name('.destroy');
+        });
 
-Route::group(['middleware' => ['apiJwt']], function () {
-    Route::get('users', [UserController::class, 'index']);
+        Route::prefix('tools')->name('.tools')->group(function () {
+            Route::get('tools', [ToolController::class, 'getTools']);
 
-    Route::get('tools', [ToolController::class, 'getTools']);
+            Route::post('tools', [ToolController::class, 'createTool']);
 
-    Route::post('tools', [ToolController::class, 'createTool']);
-
-    Route::delete('tools/{id}', [ToolController::class, 'deleteTool']);
+            Route::delete('tools/{id}', [ToolController::class, 'deleteTool']);
+        });
+    });
 });
