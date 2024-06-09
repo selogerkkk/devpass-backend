@@ -6,6 +6,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
@@ -38,8 +39,13 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function participacaoEmComunidades()
+    public function participacaoEmComunidades(): BelongsToMany
     {
         return $this->belongsToMany(Comunidade::class, 'comunidade_user');
+    }
+
+    public function cursos(): BelongsToMany
+    {
+        return $this->belongsToMany(Curso::class);
     }
 }

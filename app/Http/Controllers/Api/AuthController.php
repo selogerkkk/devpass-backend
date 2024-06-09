@@ -48,13 +48,13 @@ use Illuminate\Http\Request;
  **/
 class AuthController extends Controller
 {
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email|max:255',
+            'password' => 'required|string|min:8',
+        ]);
+
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth('api')->attempt($credentials)) {
