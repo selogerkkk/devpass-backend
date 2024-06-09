@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Curso;
-use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class CursoController extends Controller
@@ -36,12 +35,14 @@ class CursoController extends Controller
             'titulo' => 'required|string|max:255',
             'descricao' => 'required|string',
             'professor' => 'required|string|max:255',
-            'conteudo' => 'required|array',
+            'conteudo' => 'required|json',
             'duracao' => 'required|string|max:255',
             'preco' => 'required|numeric',
         ]);
 
-        $curso = Curso::create($request->all());
+        $curso = Curso::create(array_merge($request->all(), [
+            'conteudo' => json_encode($request->conteudo)
+        ]));
 
         return response()->json(['message' => 'Curso cadastrado com sucesso.', 'curso' => $curso], 201);
     }

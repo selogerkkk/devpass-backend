@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ToolController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ComunidadeController;
 
@@ -32,11 +31,10 @@ Route::prefix('v1')->group(function () {
             Route::post('/{cursoId}/inscrever', [CursoController::class, 'inscreverUsuario'])->name('.purchase');
             Route::post('/', [CursoController::class, 'cadastrarCurso'])->name('.store');
             Route::put('/{id}', [CursoController::class, 'atualizarCurso'])->name('.update');
-            Route::delete('/{id}', [CursoController::class, 'excluirCurso'])->name('.delete');
+            Route::delete('/{id}', [CursoController::class, 'excluirCurso'])->name('.destroy');
         });
 
         Route::prefix('perfis')->name('.perfis')->group(function () {
-
             Route::post('/', [PerfilController::class, 'store'])->name('.store');
             Route::get('/{userId}', [PerfilController::class, 'show'])->name('.show');
             Route::put('/{userId}', [PerfilController::class, 'update'])->name('.update');
