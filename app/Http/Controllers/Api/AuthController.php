@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
  *         required=true,
  *         @OA\Schema(type="string")
  *     ),
- *    
+ *
  * @OA\Response(
  *     response="200",
  *     description="Token de autenticação",
