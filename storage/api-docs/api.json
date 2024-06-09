@@ -1,407 +1,1077 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "Documentação de API para desafio backend",
-        "version": "1.0.0"
-    },
-    "paths": {
-        "/api/auth/login": {
-            "post": {
-                "tags": [
-                    "Autenticação"
-                ],
-                "summary": "Autenticação de usuário",
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "Endereço de e-mail do usuário",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "Senha do usuário",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Token de autenticação",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "access_token": {
-                                            "type": "string",
-                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
-                                        },
-                                        "token_type": {
-                                            "type": "string",
-                                            "example": "bearer"
-                                        },
-                                        "expires_in": {
-                                            "type": "integer",
-                                            "example": 3600
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Não autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Não autorizado."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_token": []
-                    }
-                ]
-            }
-        },
-        "/api/tools": {
-            "get": {
-                "tags": [
-                    "Ferramentas"
-                ],
-                "summary": "Obter todas as ferramentas",
-                "operationId": "0909899ce445df8e6d8074dff14c707a",
-                "parameters": [
-                    {
-                        "name": "tag",
-                        "in": "query",
-                        "description": "Tag para filtrar as ferramentas",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Lista de todas as ferramentas",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Tool"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Não autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Não autorizado."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erro ao buscar ferramentas",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Erro ao buscar ferramentas."
-                                        },
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensagem de erro específica."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_token": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Ferramentas"
-                ],
-                "summary": "Criar uma nova ferramenta",
-                "operationId": "64f7dd31e0a984f4c4447c5a049ea2d4",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "title",
-                                    "link",
-                                    "description",
-                                    "tags"
-                                ],
-                                "properties": {
-                                    "title": {
-                                        "type": "string",
-                                        "example": "Nome da Ferramenta"
-                                    },
-                                    "link": {
-                                        "type": "string",
-                                        "format": "url",
-                                        "example": "https://exemplo.com"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "Descrição da ferramenta."
-                                    },
-                                    "tags": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "tag1",
-                                            "tag2"
-                                        ]
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Ferramenta adicionada com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ferramenta adicionada!"
-                                        },
-                                        "tool": {
-                                            "$ref": "#/components/schemas/Tool"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Erro de validação",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Erro de validação."
-                                        },
-                                        "errors": {
-                                            "type": "object",
-                                            "example": {
-                                                "field_name": [
-                                                    "Error message"
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erro ao adicionar ferramenta",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Erro ao adicionar ferramenta."
-                                        },
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensagem de erro específica."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_token": []
-                    }
-                ]
-            }
-        },
-        "/api/tools/{id}": {
-            "delete": {
-                "tags": [
-                    "Ferramentas"
-                ],
-                "summary": "Remover uma ferramenta",
-                "operationId": "da9179db0f7061e77dd630059c223a7a",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID da ferramenta a ser removida",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Ferramenta removida com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ferramenta removida!"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Ferramenta não encontrada",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ferramenta não encontrada."
-                                        },
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensagem de erro específica."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_token": []
-                    }
-                ]
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "Tool": {
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "link": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "tags": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "User": {
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            }
-        },
-        "securitySchemes": {
-            "bearer_token": {
-                "type": "http",
-                "scheme": "bearer",
-                "description": "Enter token in format (Bearer <token>)",
-                "name": "Authorization",
-                "in": "header"
-            }
-        }
-    }
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Laravel",
+		"version": "0.0.1"
+	},
+	"servers": [
+		{
+			"url": "http:\/\/localhost:3000\/api"
+		}
+	],
+	"paths": {
+		"\/v1\/login": {
+			"post": {
+				"operationId": "auth.login",
+				"tags": [
+					"Auth"
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string",
+										"format": "email"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"email",
+									"password"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"access_token": {
+											"type": "string"
+										},
+										"token_type": {
+											"type": "string",
+											"example": "bearer"
+										},
+										"expires_in": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"access_token",
+										"token_type",
+										"expires_in"
+									]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": {
+											"type": "string",
+											"example": "Não autorizado"
+										}
+									},
+									"required": [
+										"error"
+									]
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		},
+		"\/v1\/comunidades": {
+			"get": {
+				"operationId": ".comunidades.index",
+				"tags": [
+					"Comunidade"
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#\/components\/schemas\/ComunidadeResource"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"operationId": ".comunidades.store",
+				"tags": [
+					"Comunidade"
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"nome": {
+										"type": "string"
+									},
+									"tema": {
+										"type": "string"
+									},
+									"atividades": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
+								},
+								"required": [
+									"nome",
+									"tema"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ComunidadeResource"
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		},
+		"\/v1\/comunidades\/{id}": {
+			"get": {
+				"operationId": ".comunidades.show",
+				"tags": [
+					"Comunidade"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ComunidadeResource"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": ".comunidades.destroy",
+				"tags": [
+					"Comunidade"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No content",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "null"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/v1\/cursos\/cursos": {
+			"get": {
+				"operationId": ".cursos.index",
+				"tags": [
+					"Curso"
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"cursos": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"cursos"
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/v1\/cursos\/{curso_id}\/inscrever": {
+			"post": {
+				"operationId": ".cursos.purchase",
+				"tags": [
+					"Curso"
+				],
+				"parameters": [
+					{
+						"name": "curso_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Usuário inscrito no curso com sucesso."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "O usuário já está inscrito neste curso."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/v1\/cursos": {
+			"post": {
+				"operationId": ".cursos.store",
+				"tags": [
+					"Curso"
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"titulo": {
+										"type": "string"
+									},
+									"descricao": {
+										"type": "string"
+									},
+									"professor": {
+										"type": "string"
+									},
+									"conteudo": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									},
+									"duracao": {
+										"type": "string"
+									},
+									"preco": {
+										"type": "number"
+									}
+								},
+								"required": [
+									"titulo",
+									"descricao",
+									"professor",
+									"conteudo",
+									"duracao",
+									"preco"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Curso cadastrado com sucesso."
+										},
+										"curso": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"curso"
+									]
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		},
+		"\/v1\/cursos\/{id}": {
+			"put": {
+				"operationId": ".cursos.update",
+				"tags": [
+					"Curso"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"titulo": {
+										"type": "string"
+									},
+									"descricao": {
+										"type": "string"
+									},
+									"professor": {
+										"type": "string"
+									},
+									"conteudo": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									},
+									"duracao": {
+										"type": "string"
+									},
+									"preco": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Curso atualizado com sucesso."
+										},
+										"curso": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"curso"
+									]
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			},
+			"delete": {
+				"operationId": ".cursos.delete",
+				"tags": [
+					"Curso"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Curso excluído com sucesso."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/documentation": {
+			"get": {
+				"operationId": "l5-swagger.default.api",
+				"summary": "Display Swagger API page",
+				"tags": [
+					"Swagger"
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/oauth2-callback": {
+			"get": {
+				"operationId": "l5-swagger.default.oauth2_callback",
+				"summary": "Display Oauth2 callback pages",
+				"tags": [
+					"Swagger"
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/v1\/tools\/tools": {
+			"get": {
+				"operationId": "tool.getTools",
+				"tags": [
+					"Tool"
+				],
+				"parameters": [
+					{
+						"name": "tag",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Erro ao buscar ferramentas"
+										},
+										"error": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"error"
+									]
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Nenhuma ferramenta encontrada."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"operationId": "tool.createTool",
+				"tags": [
+					"Tool"
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string"
+									},
+									"link": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"tags": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
+								},
+								"required": [
+									"title",
+									"link",
+									"description",
+									"tags"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"500": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Erro ao adicionar ferramenta."
+										},
+										"error": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"error"
+									]
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Ferramenta adicionada!"
+										},
+										"tool": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"tool"
+									]
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		},
+		"\/v1\/tools\/tools\/{id}": {
+			"delete": {
+				"operationId": "tool.deleteTool",
+				"tags": [
+					"Tool"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"404": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Ferramenta não encontrada."
+										},
+										"error": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"error"
+									]
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Ferramenta removida!"
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/v1\/users": {
+			"get": {
+				"operationId": ".users.index",
+				"tags": [
+					"User"
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#\/components\/schemas\/UserResource"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"operationId": ".users.store",
+				"tags": [
+					"User"
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string",
+										"format": "email"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"name",
+									"email",
+									"password"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/UserResource"
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		},
+		"\/v1\/users\/{id}": {
+			"get": {
+				"operationId": ".users.show",
+				"tags": [
+					"User"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/UserResource"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": ".users.destroy",
+				"tags": [
+					"User"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No content",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "null"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/v1\/users\/{id}\/subscribe": {
+			"post": {
+				"operationId": ".users.subscribe",
+				"tags": [
+					"User"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"comunidade_id": {
+										"type": "integer"
+									}
+								},
+								"required": [
+									"comunidade_id"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Usuário inscrito na comunidade com sucesso."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Usuário já é membro dessa comunidade."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"ComunidadeResource": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer"
+					},
+					"nome": {
+						"type": "string"
+					},
+					"tema": {
+						"type": "string"
+					},
+					"atividades": {
+						"type": [
+							"array",
+							"null"
+						],
+						"items": {
+							"type": "string"
+						}
+					},
+					"membros": {
+						"type": "array",
+						"items": {
+							"$ref": "#\/components\/schemas\/UserResource"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"nome",
+					"tema",
+					"atividades",
+					"membros"
+				],
+				"title": "ComunidadeResource"
+			},
+			"UserResource": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"participacao_em_comunidades": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email",
+					"participacao_em_comunidades"
+				],
+				"title": "UserResource"
+			}
+		},
+		"responses": {
+			"ValidationException": {
+				"description": "Validation error",
+				"content": {
+					"application\/json": {
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string",
+									"description": "Errors overview."
+								},
+								"errors": {
+									"type": "object",
+									"description": "A detailed description of each field that failed validation.",
+									"additionalProperties": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
+								}
+							},
+							"required": [
+								"message",
+								"errors"
+							]
+						}
+					}
+				}
+			}
+		}
+	}
 }
