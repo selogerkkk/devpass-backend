@@ -29,6 +29,13 @@ class CursoController extends Controller
         return response()->json(['cursos' => $cursos]);
     }
 
+    public function listarCurso($id): JsonResponse
+    {
+        $curso = Curso::findOrFail($id);
+
+        return response()->json(['curso' => $curso]);
+    }
+
     public function cadastrarCurso(Request $request): JsonResponse
     {
         $request->validate([
