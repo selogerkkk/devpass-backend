@@ -1,12 +1,12 @@
 {
 	"openapi": "3.1.0",
 	"info": {
-		"title": "Laravel",
-		"version": "0.0.1"
+		"title": "Seloger",
+		"version": "0.0.7"
 	},
 	"servers": [
 		{
-			"url": "http:\/\/localhost:3000\/api"
+			"url": "http://devpass-backend-production.up.railway.app/api"
 		}
 	],
 	"paths": {
@@ -120,7 +120,7 @@
 				],
 				"requestBody": {
 					"content": {
-						"application\/json": {
+						"multipart\/form-data": {
 							"schema": {
 								"type": "object",
 								"properties": {
@@ -135,6 +135,19 @@
 										"items": {
 											"type": "string"
 										}
+									},
+									"descricao": {
+										"type": [
+											"string",
+											"null"
+										]
+									},
+									"thumb": {
+										"type": [
+											"string",
+											"null"
+										],
+										"format": "binary"
 									}
 								},
 								"required": [
@@ -323,7 +336,7 @@
 				],
 				"requestBody": {
 					"content": {
-						"application\/json": {
+						"multipart\/form-data": {
 							"schema": {
 								"type": "object",
 								"properties": {
@@ -336,26 +349,51 @@
 									"professor": {
 										"type": "string"
 									},
-									"conteudo": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										}
-									},
 									"duracao": {
 										"type": "string"
 									},
 									"preco": {
 										"type": "number"
+									},
+									"thumb": {
+										"type": [
+											"string",
+											"null"
+										],
+										"format": "binary"
+									},
+									"rating": {
+										"type": [
+											"number",
+											"null"
+										]
+									},
+									"conteudo": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"titulo": {
+													"type": "string"
+												},
+												"url": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"titulo",
+												"url"
+											]
+										}
 									}
 								},
 								"required": [
 									"titulo",
 									"descricao",
 									"professor",
-									"conteudo",
 									"duracao",
-									"preco"
+									"preco",
+									"conteudo"
 								]
 							}
 						}
@@ -469,7 +507,7 @@
 				}
 			},
 			"delete": {
-				"operationId": ".cursos.delete",
+				"operationId": ".cursos.destroy",
 				"tags": [
 					"Curso"
 				],
@@ -494,6 +532,260 @@
 										"message": {
 											"type": "string",
 											"example": "Curso excluído com sucesso."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"\/v1\/perfis": {
+			"post": {
+				"operationId": ".perfis.store",
+				"tags": [
+					"Perfil"
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"user_id": {
+										"type": "integer"
+									},
+									"formacao": {
+										"type": "string"
+									},
+									"habilidades": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"user_id",
+									"formacao",
+									"habilidades"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Perfil criado com sucesso."
+										},
+										"perfil": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"perfil"
+									]
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		},
+		"\/v1\/perfis\/{user_id}": {
+			"get": {
+				"operationId": ".perfis.show",
+				"tags": [
+					"Perfil"
+				],
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"perfil": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"perfil"
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Perfil não encontrado."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": ".perfis.update",
+				"tags": [
+					"Perfil"
+				],
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"formacao": {
+										"type": "string"
+									},
+									"habilidades": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Perfil atualizado com sucesso."
+										},
+										"perfil": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message",
+										"perfil"
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Perfil não encontrado."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					},
+					"422": {
+						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			},
+			"delete": {
+				"operationId": ".perfis.destroy",
+				"tags": [
+					"Perfil"
+				],
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Perfil excluído com sucesso."
+										}
+									},
+									"required": [
+										"message"
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Perfil não encontrado."
 										}
 									},
 									"required": [
@@ -548,252 +840,9 @@
 				}
 			}
 		},
-		"\/v1\/tools\/tools": {
-			"get": {
-				"operationId": "tool.getTools",
-				"tags": [
-					"Tool"
-				],
-				"parameters": [
-					{
-						"name": "tag",
-						"in": "query",
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"responses": {
-					"500": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"message": {
-											"type": "string",
-											"example": "Erro ao buscar ferramentas"
-										},
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message",
-										"error"
-									]
-								}
-							}
-						}
-					},
-					"200": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"message": {
-											"type": "string",
-											"example": "Nenhuma ferramenta encontrada."
-										}
-									},
-									"required": [
-										"message"
-									]
-								}
-							}
-						}
-					}
-				}
-			},
+		"\/v1\/register": {
 			"post": {
-				"operationId": "tool.createTool",
-				"tags": [
-					"Tool"
-				],
-				"requestBody": {
-					"content": {
-						"application\/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"title": {
-										"type": "string"
-									},
-									"link": {
-										"type": "string"
-									},
-									"description": {
-										"type": "string"
-									},
-									"tags": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										}
-									}
-								},
-								"required": [
-									"title",
-									"link",
-									"description",
-									"tags"
-								]
-							}
-						}
-					}
-				},
-				"responses": {
-					"500": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"message": {
-											"type": "string",
-											"example": "Erro ao adicionar ferramenta."
-										},
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message",
-										"error"
-									]
-								}
-							}
-						}
-					},
-					"201": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"message": {
-											"type": "string",
-											"example": "Ferramenta adicionada!"
-										},
-										"tool": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message",
-										"tool"
-									]
-								}
-							}
-						}
-					},
-					"422": {
-						"$ref": "#\/components\/responses\/ValidationException"
-					}
-				}
-			}
-		},
-		"\/v1\/tools\/tools\/{id}": {
-			"delete": {
-				"operationId": "tool.deleteTool",
-				"tags": [
-					"Tool"
-				],
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"responses": {
-					"404": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"message": {
-											"type": "string",
-											"example": "Ferramenta não encontrada."
-										},
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message",
-										"error"
-									]
-								}
-							}
-						}
-					},
-					"200": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"message": {
-											"type": "string",
-											"example": "Ferramenta removida!"
-										}
-									},
-									"required": [
-										"message"
-									]
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"\/v1\/users": {
-			"get": {
-				"operationId": ".users.index",
-				"tags": [
-					"User"
-				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#\/components\/schemas\/UserResource"
-									}
-								}
-							}
-						}
-					}
-				}
-			},
-			"post": {
-				"operationId": ".users.store",
+				"operationId": "users.store",
 				"tags": [
 					"User"
 				],
@@ -836,6 +885,29 @@
 					},
 					"422": {
 						"$ref": "#\/components\/responses\/ValidationException"
+					}
+				}
+			}
+		},
+		"\/v1\/users": {
+			"get": {
+				"operationId": ".users.index",
+				"tags": [
+					"User"
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#\/components\/schemas\/UserResource"
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -1000,6 +1072,15 @@
 							"type": "string"
 						}
 					},
+					"descricao": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"thumb": {
+						"type": "string"
+					},
 					"membros": {
 						"type": "array",
 						"items": {
@@ -1012,6 +1093,8 @@
 					"nome",
 					"tema",
 					"atividades",
+					"descricao",
+					"thumb",
 					"membros"
 				],
 				"title": "ComunidadeResource"
