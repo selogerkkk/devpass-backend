@@ -14,6 +14,7 @@ class ComunidadeResource extends JsonResource
             'tema' => $this->tema,
             'atividades' => $this->atividades,
             'descricao' => $this->descricao,
+            'thumb' => $this->thumb,
             'membros' => UserResource::collection($this->membros),
         ];
     }

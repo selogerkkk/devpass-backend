@@ -17,6 +17,7 @@ class ComunidadeFactory extends Factory
             'atividades' => $this->faker->randomElements([
                 'Discussão', 'Aprendizado', 'Workshop', 'Networking', 'Laravel'
             ], rand(1, 5)),
+            'thumb' => $this->faker->imageUrl(640, 480, 'comunidades', true),
         ];
     }
 }
