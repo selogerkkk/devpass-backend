@@ -28,9 +28,18 @@ class ComunidadeController extends Controller
             'tema' => 'required|string|max:255',
             'atividades' => 'array',
             'descricao' => 'nullable|string',
+            'thumb' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $comunidade = Comunidade::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('thumb')) {
+            $path = $request->file('thumb')->store('thumbs', 'public');
+            $data['thumb'] = $path;
+        }
+
+        $comunidade = Comunidade::create($data);
+
         if ($request->has('membros')) {
             $comunidade->membros()->sync($request->membros);
         }

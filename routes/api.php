@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
 
         Route::prefix('cursos')->name('.cursos')->group(function () {
             Route::post('/{cursoId}/inscrever', [CursoController::class, 'inscreverUsuario'])->name('.purchase');
+            Route::delete('/{curso_id}/desinscrever', [CursoController::class, 'desinscreverUsuario'])->name('desinscrever');
             Route::post('/{id}', [CursoController::class, 'listarCurso'])->name('.show');
             Route::post('/', [CursoController::class, 'cadastrarCurso'])->name('.store');
             Route::put('/{id}', [CursoController::class, 'atualizarCurso'])->name('.update');

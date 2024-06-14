@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('cursos', function (Blueprint $table) {
             $table->string('thumb')->nullable();
-            $table->integer('rating', 3, 2)->default(0);
+            $table->integer('rating')->nullable();
         });
     }
 

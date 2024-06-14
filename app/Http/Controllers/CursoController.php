@@ -22,6 +22,20 @@ class CursoController extends Controller
         return response()->json(['message' => 'Usuário inscrito no curso com sucesso.'], 201);
     }
 
+    public function desinscreverUsuario(Request $request, $curso_id): JsonResponse
+    {
+        $user = auth()->user();
+        $curso = Curso::findOrFail($curso_id);
+
+        if (!$user->cursos()->where('curso_id', $curso_id)->exists()) {
+            return response()->json(['message' => 'O usuário não está inscrito neste curso.'], 400);
+        }
+
+        $user->cursos()->detach($curso_id);
+
+        return response()->json(['message' => 'Usuário desinscrito do curso com sucesso.'], 200);
+    }
+
     public function listarCursos(): JsonResponse
     {
         $cursos = Curso::all();
