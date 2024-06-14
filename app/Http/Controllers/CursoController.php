@@ -61,13 +61,20 @@ class CursoController extends Controller
             'conteudo.*.url' => 'required|string',
             'duracao' => 'required|string|max:255',
             'preco' => 'required|numeric',
-            'thumb' => 'string',
-            'rating' => 'numeric',
+            'thumb' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'rating' => 'numeric|nullable',
         ]);
 
-        $curso = Curso::create(array_merge($request->all(), [
-            'conteudo' => json_encode($request->conteudo)
-        ]));
+        $data = $request->all();
+
+        if ($request->hasFile('thumb')) {
+            $path = $request->file('thumb')->store('thumbs', 'public');
+            $data['thumb'] = $path;
+        }
+
+        $data['conteudo'] = json_encode($data['conteudo']);
+
+        $curso = Curso::create($data);
 
         return response()->json(['message' => 'Curso cadastrado com sucesso.', 'curso' => $curso], 201);
     }
