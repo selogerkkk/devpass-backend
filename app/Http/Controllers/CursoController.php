@@ -47,6 +47,8 @@ class CursoController extends Controller
             'conteudo.*.url' => 'required|string',
             'duracao' => 'required|string|max:255',
             'preco' => 'required|numeric',
+            'thumb' => 'string',
+            'rating' => 'numeric',
         ]);
 
         $curso = Curso::create(array_merge($request->all(), [

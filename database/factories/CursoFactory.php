@@ -18,6 +18,8 @@ class CursoFactory extends Factory
             'conteudo' => json_encode($this->faker->paragraphs(rand(2, 5))),
             'duracao' => $this->faker->randomElement(['1 hora', '2 horas', '3 horas']),
             'preco' => $this->faker->randomFloat(2, 10, 100),
+            'thumb' => $this->faker->imageUrl(640, 480, 'cursos', true),
+            'rating' => $this->faker->numberBetween(1, 5),
         ];
     }
 }

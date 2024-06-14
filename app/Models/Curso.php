@@ -15,7 +15,9 @@ class Curso extends Model
         'professor',
         'conteudo',
         'duracao',
-        'preco'
+        'preco',
+        'thumb',
+        'rating',
     ];
 
     public function users()
