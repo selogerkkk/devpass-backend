@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('comunidade', function (Blueprint $table) {
+        Schema::table('comunidades', function (Blueprint $table) {
             $table->string('thumb')->nullable();
         });
     }
 
     public function down(): void
     {
-        Schema::table('comunidade', function (Blueprint $table) {
+        Schema::table('comunidades', function (Blueprint $table) {
             $table->dropColumn('thumb');
         });
     }
