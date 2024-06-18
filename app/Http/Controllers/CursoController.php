@@ -8,30 +8,30 @@ use Illuminate\Http\JsonResponse;
 
 class CursoController extends Controller
 {
-    public function inscreverUsuario(Request $request, $curso_id): JsonResponse
+    public function inscreverUsuario(Request $request, $id): JsonResponse
     {
         $user = auth()->user();
-        $curso = Curso::findOrFail($curso_id);
+        $curso = Curso::findOrFail($id);
 
-        if ($user->cursos()->where('curso_id', $curso_id)->exists()) {
+        if ($user->cursos()->where('curso_id', $id)->exists()) {
             return response()->json(['message' => 'O usuário já está inscrito neste curso.'], 400);
         }
 
-        $user->cursos()->attach($curso_id);
+        $user->cursos()->attach($id);
 
         return response()->json(['message' => 'Usuário inscrito no curso com sucesso.'], 201);
     }
 
-    public function desinscreverUsuario(Request $request, $curso_id): JsonResponse
+    public function desinscreverUsuario(Request $request, $id): JsonResponse
     {
         $user = auth()->user();
-        $curso = Curso::findOrFail($curso_id);
+        $curso = Curso::findOrFail($id);
 
-        if (!$user->cursos()->where('curso_id', $curso_id)->exists()) {
+        if (!$user->cursos()->where('curso_id', $id)->exists()) {
             return response()->json(['message' => 'O usuário não está inscrito neste curso.'], 400);
         }
 
-        $user->cursos()->detach($curso_id);
+        $user->cursos()->detach($id);
 
         return response()->json(['message' => 'Usuário desinscrito do curso com sucesso.'], 200);
     }

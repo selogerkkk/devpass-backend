@@ -27,13 +27,13 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('cursos')->name('.cursos')->group(function () {
-            Route::post('/{cursoId}/inscrever', [CursoController::class, 'inscreverUsuario'])->name('.purchase');
-            Route::delete('/{curso_id}/desinscrever', [CursoController::class, 'desinscreverUsuario'])->name('desinscrever');
-            Route::post('/{id}', [CursoController::class, 'listarCurso'])->name('.show');
+            Route::get('/', [CursoController::class, 'listarCursos'])->name('.index');
             Route::post('/', [CursoController::class, 'cadastrarCurso'])->name('.store');
+            Route::get('/{id}', [CursoController::class, 'listarCurso'])->name('.show');
             Route::put('/{id}', [CursoController::class, 'atualizarCurso'])->name('.update');
             Route::delete('/{id}', [CursoController::class, 'excluirCurso'])->name('.destroy');
-            Route::get('cursos', [CursoController::class, 'listarCursos'])->name('.index');
+            Route::delete('/{id}/desinscrever', [CursoController::class, 'desinscreverUsuario'])->name('desinscrever');
+            Route::post('/{id}/inscrever', [CursoController::class, 'inscreverUsuario'])->name('.purchase');
         });
 
         Route::prefix('perfis')->name('.perfis')->group(function () {
